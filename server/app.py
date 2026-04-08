@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
+from typing import Optional
 
 app = FastAPI()
 
@@ -9,10 +10,5 @@ def root():
 
 
 @app.post("/reset")
-async def reset(request: Request):
-    try:
-        await request.json()  # try reading body
-    except:
-        pass  # ignore if empty
-
+def reset(body: Optional[dict] = None):
     return {"status": "ok"}

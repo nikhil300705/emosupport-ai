@@ -6,23 +6,18 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# 🔥 FORCE ACCEPT ANY REQUEST (WITH OR WITHOUT BODY)
+
+# ✅ MUST ACCEPT JSON BODY (even if unused)
 @app.post("/reset")
 async def reset(request: Request):
-    try:
-        await request.json()  # try reading body if exists
-    except:
-        pass  # ignore if no body
-
+    data = await request.json()  # <-- THIS IS THE KEY
     return {"status": "ok"}
 
 
+# ✅ MUST ACCEPT JSON BODY
 @app.post("/step")
 async def step(request: Request):
-    try:
-        await request.json()
-    except:
-        pass
+    data = await request.json()
 
     return {
         "observation": "ok",

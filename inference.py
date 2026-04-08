@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 
 app = FastAPI()
 
@@ -6,19 +6,12 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-
-# ✅ MUST ACCEPT JSON BODY (even if unused)
 @app.post("/reset")
-async def reset(request: Request):
-    data = await request.json()  # <-- THIS IS THE KEY
+def reset():
     return {"status": "ok"}
 
-
-# ✅ MUST ACCEPT JSON BODY
 @app.post("/step")
-async def step(request: Request):
-    data = await request.json()
-
+def step():
     return {
         "observation": "ok",
         "reward": 0.5,

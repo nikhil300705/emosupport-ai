@@ -1,19 +1,10 @@
 name: emosupport
 description: Emotion support AI
 
-entrypoint: inference.py
+entrypoint: app.py
 
 endpoints:
   - path: /reset
     method: POST
-    request:
-      type: object
-      properties: {}
-      required: []
-
   - path: /step
     method: POST
-    request:
-      type: object
-      properties: {}
-      required: []

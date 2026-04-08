@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Body
 
 app = FastAPI()
 
@@ -6,22 +6,13 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ MUST READ BODY (important)
+# ✅ THIS IS THE KEY FIX
 @app.post("/reset")
-async def reset(request: Request):
-    try:
-        await request.json()  # 👈 this line fixes the error
-    except:
-        pass
+async def reset(body: dict = Body(...)):
     return {"status": "ok"}
 
 @app.post("/step")
-async def step(request: Request):
-    try:
-        await request.json()
-    except:
-        pass
-
+async def step(body: dict = Body(...)):
     return {
         "observation": "ok",
         "reward": 0.5,

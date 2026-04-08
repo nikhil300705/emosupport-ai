@@ -6,14 +6,12 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ NO BODY PARAMETER AT ALL
 @app.post("/reset")
-def reset():
+async def reset(request=None):
     return {"status": "ok"}
 
-# ✅ NO BODY PARAMETER AT ALL
 @app.post("/step")
-def step():
+async def step(request=None):
     return {
         "observation": "ok",
         "reward": 0.5,

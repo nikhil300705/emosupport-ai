@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 app = FastAPI()
 
@@ -9,6 +9,10 @@ def root():
 
 
 @app.post("/reset")
-def reset():
-    # Must NOT expect body (important for checker)
+async def reset(request: Request):
+    try:
+        await request.json()  # try reading body
+    except:
+        pass  # ignore if empty
+
     return {"status": "ok"}

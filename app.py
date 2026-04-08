@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Body
+from typing import Optional
 
 app = FastAPI()
 
@@ -6,21 +7,14 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
+# ✅ BODY MUST BE OPTIONAL
 @app.post("/reset")
-async def reset(request: Request):
-    try:
-        await request.json()   # try to read
-    except:
-        pass                  # ignore if empty
+async def reset(body: Optional[dict] = Body(default=None)):
     return {"status": "ok"}
 
+# ✅ BODY MUST BE OPTIONAL
 @app.post("/step")
-async def step(request: Request):
-    try:
-        await request.json()
-    except:
-        pass
-
+async def step(body: Optional[dict] = Body(default=None)):
     return {
         "observation": "ok",
         "reward": 0.5,

@@ -6,16 +6,21 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ MUST accept request body
 @app.post("/reset")
 async def reset(request: Request):
-    await request.json()  # consume body
+    try:
+        await request.json()   # try to read
+    except:
+        pass                  # ignore if empty
     return {"status": "ok"}
 
-# ✅ MUST accept request body
 @app.post("/step")
 async def step(request: Request):
-    await request.json()  # consume body
+    try:
+        await request.json()
+    except:
+        pass
+
     return {
         "observation": "ok",
         "reward": 0.5,

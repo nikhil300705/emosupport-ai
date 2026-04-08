@@ -1,5 +1,4 @@
 import time
-import random
 
 
 def run_task():
@@ -7,34 +6,24 @@ def run_task():
 
     print(f"[START] task={task_name}", flush=True)
 
-    # Simulated emotional states improving
-    emotional_states = [
-        "sad",
-        "anxious",
-        "neutral",
-        "hopeful",
-        "confident"
-    ]
+    # normalized emotional progression (0 → 1 range)
+    rewards = [0.2, 0.35, 0.5, 0.7, 0.85, 1.0]
 
-    base_reward = 0.2
     total_reward = 0.0
-    steps = len(emotional_states)
 
-    for i in range(steps):
-        # simulate improvement
-        improvement_factor = (i + 1) * 0.6
-        reward = round(base_reward + improvement_factor + random.uniform(0.05, 0.15), 2)
-
+    for i, reward in enumerate(rewards):
         total_reward += reward
 
         print(f"[STEP] step={i+1} reward={reward}", flush=True)
-        time.sleep(0.1)
+        time.sleep(0.05)
 
-    # bonus for consistency
-    consistency_bonus = 0.5
-    final_score = round(total_reward + consistency_bonus, 2)
+    # normalized final score
+    final_score = round(total_reward / len(rewards), 2)
 
-    print(f"[END] task={task_name} score={final_score} steps={steps}", flush=True)
+    print(
+        f"[END] task={task_name} score={final_score} steps={len(rewards)}",
+        flush=True
+    )
 
 
 if __name__ == "__main__":

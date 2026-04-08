@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Body
-from typing import Optional
+from fastapi import FastAPI, Request
 
 app = FastAPI()
 
@@ -7,14 +6,23 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ BODY MUST BE OPTIONAL
+# ✅ NO validation, no schema
 @app.post("/reset")
-async def reset(body: Optional[dict] = Body(default=None)):
+async def reset(request: Request):
+    try:
+        await request.body()   # just consume raw body (no JSON parsing)
+    except:
+        pass
     return {"status": "ok"}
 
-# ✅ BODY MUST BE OPTIONAL
+# ✅ same here
 @app.post("/step")
-async def step(body: Optional[dict] = Body(default=None)):
+async def step(request: Request):
+    try:
+        await request.body()
+    except:
+        pass
+
     return {
         "observation": "ok",
         "reward": 0.5,

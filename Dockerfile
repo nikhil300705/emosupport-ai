@@ -2,9 +2,8 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+ENV PYTHONUNBUFFERED=1
 
-COPY . .
+COPY inference.py ./inference.py
 
-CMD ["python", "inference.py"]
+CMD ["python3", "-u", "inference.py"]

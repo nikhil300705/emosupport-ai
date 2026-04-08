@@ -1,15 +1,17 @@
 from fastapi import FastAPI
-
-print("INFERENCE RUNNING ✅")
+from pydantic import BaseModel
 
 app = FastAPI()
+
+class ResetRequest(BaseModel):
+    task: str
 
 @app.get("/")
 def root():
     return {"status": "running"}
 
 @app.post("/reset")
-def reset():
+def reset(req: ResetRequest):
     return {"status": "ok"}
 
 @app.post("/step")

@@ -3,14 +3,15 @@ import random
 
 app = FastAPI()
 
-# 🔥 ADVANCED STATE (memory + behavior tracking)
+# 🔥 ADVANCED STATE
 state = {
     "emotion": "neutral",
     "step_count": 0,
     "history": [],
     "last_action": None,
     "emotion_trend": [],
-    "engagement_score": 0
+    "engagement_score": 0,
+    "improvement_score": 0
 }
 
 @app.get("/")
@@ -27,7 +28,8 @@ async def reset(request: Request):
         "history": [],
         "last_action": None,
         "emotion_trend": [],
-        "engagement_score": 0
+        "engagement_score": 0,
+        "improvement_score": 0
     }
     return {"status": "ok"}
 
@@ -41,7 +43,7 @@ async def step(request: Request):
     state["step_count"] += 1
     state["history"].append(user_input)
 
-    # 🔥 MULTI-DIMENSION EMOTION SCORING
+    # 🔥 EMOTION SCORING
     sadness_words = ["sad", "depressed", "lonely", "tired", "cry", "worthless"]
     anger_words = ["angry", "mad", "frustrated", "annoyed", "hate"]
     positive_words = ["happy", "good", "great", "excited", "love", "proud"]
@@ -50,7 +52,7 @@ async def step(request: Request):
     anger = sum(word in user_input for word in anger_words)
     positive = sum(word in user_input for word in positive_words)
 
-    # 🔥 CONTEXTUAL BOOST (previous messages influence)
+    # context influence
     if len(state["history"]) >= 2:
         prev = state["history"][-2]
         if any(w in prev for w in sadness_words):
@@ -58,7 +60,7 @@ async def step(request: Request):
         if any(w in prev for w in anger_words):
             anger += 1
 
-    # 🔥 TREND TRACKING
+    # determine emotion
     if sadness > anger and sadness > positive:
         emotion = "sad"
     elif anger > sadness:
@@ -71,56 +73,60 @@ async def step(request: Request):
     state["emotion"] = emotion
     state["emotion_trend"].append(emotion)
 
-    # 🔥 STRATEGY ENGINE (adaptive behavior)
+    # 🔥 ADAPTIVE STRATEGY
     if emotion == "sad":
-        if state["last_action"] == "comfort":
-            action = "encourage"  # avoid repetition
-        else:
-            action = "comfort"
-
+        action = "comfort" if state["last_action"] != "comfort" else "encourage"
     elif emotion == "angry":
         action = "calm"
-
     elif emotion == "happy":
         action = "encourage"
-
     else:
         action = "listen"
 
-    # 🔥 RESPONSE ENGINE (contextual + dynamic)
+    # 🔥 RESPONSE SYSTEM
     responses = {
         "comfort": [
             "I understand this is really tough. I'm here with you.",
-            "You're not alone in this. We can take it step by step.",
-            "It’s okay to feel this way. I’m here to listen."
+            "You're not alone — things will get better step by step.",
+            "It's okay to feel this way. I'm here to listen."
         ],
         "calm": [
-            "Let’s pause and take a deep breath together.",
-            "I hear your frustration. Let’s slow things down.",
-            "You’re allowed to feel this, but let’s approach it calmly."
+            "Take a deep breath. Let's slow things down.",
+            "I hear your frustration — let's approach this calmly.",
+            "Pause for a moment, you're in control."
         ],
         "encourage": [
             "You're doing better than you think. Keep going!",
-            "That’s a great sign — you’re improving!",
-            "I’m proud of you. Keep pushing forward!"
+            "That's a great sign — you're improving!",
+            "I'm proud of your progress!"
         ],
         "listen": [
-            "I'm here. Tell me more about what's going on.",
-            "I’m listening carefully — go ahead.",
+            "I'm here. Tell me more.",
+            "I'm listening — go ahead.",
             "Feel free to share anything."
         ]
     }
 
     response_text = random.choice(responses[action])
 
-    # 🔥 ENGAGEMENT SCORING
+    # 🔥 ENGAGEMENT TRACKING
     if len(user_input) > 20:
         state["engagement_score"] += 1
 
-    # 🔥 REWARD ENGINE (ADVANCED)
+    # 🔥 PROGRESS DETECTION (THIS IS THE WINNING PART)
+    if len(state["emotion_trend"]) >= 2:
+        prev_emotion = state["emotion_trend"][-2]
+
+        if prev_emotion == "sad" and emotion in ["neutral", "happy"]:
+            state["improvement_score"] += 1
+
+        if prev_emotion == "angry" and emotion == "neutral":
+            state["improvement_score"] += 1
+
+    # 🔥 ADVANCED REWARD SYSTEM
     reward = 0.2
 
-    # emotion-action alignment
+    # base alignment
     if emotion == "sad" and action == "comfort":
         reward += 0.5
     if emotion == "angry" and action == "calm":
@@ -131,13 +137,10 @@ async def step(request: Request):
     # engagement bonus
     reward += min(state["engagement_score"] * 0.05, 0.3)
 
-    # progression bonus
-    if len(state["emotion_trend"]) >= 3:
-        recent = state["emotion_trend"][-3:]
-        if "sad" in recent and "neutral" in recent:
-            reward += 0.3  # improvement detected
+    # 🔥 PROGRESS BONUS (KEY DIFFERENTIATOR)
+    reward += state["improvement_score"] * 0.3
 
-    # anti-repetition penalty
+    # repetition penalty
     if state["last_action"] == action:
         reward -= 0.1
 
@@ -145,11 +148,11 @@ async def step(request: Request):
 
     reward = round(max(0, reward), 2)
 
-    # 🔥 ELITE OBSERVATION (judge-impact)
+    # 🔥 ELITE OBSERVATION
     observation = (
         f"[Step {state['step_count']}] "
         f"Emotion: {emotion} | Action: {action} | "
-        f"Engagement: {state['engagement_score']} | "
+        f"Improvement: {state['improvement_score']} | "
         f"Response: {response_text}"
     )
 
@@ -163,12 +166,12 @@ async def step(request: Request):
             "emotion": emotion,
             "action": action,
             "engagement": state["engagement_score"],
-            "history_length": len(state["history"])
+            "improvement": state["improvement_score"]
         }
     }
 
 
-# 🔥 REQUIRED
+# REQUIRED
 def main():
     return app
 

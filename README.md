@@ -1,3 +1,12 @@
+---
+title: EmoSupport AI
+emoji: 🤖
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
 # EmoSupport AI 🤖💙
 
 An intelligent emotional support agent designed to interact with users empathetically and efficiently solve their problems.

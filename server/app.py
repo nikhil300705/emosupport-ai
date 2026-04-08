@@ -1,5 +1,5 @@
-from fastapi import FastAPI
-from typing import Optional
+from fastapi import FastAPI, Body
+from typing import Any
 
 app = FastAPI()
 
@@ -10,5 +10,5 @@ def root():
 
 
 @app.post("/reset")
-def reset(body: Optional[dict] = None):
+def reset(body: Any = Body(default={})):
     return {"status": "ok"}

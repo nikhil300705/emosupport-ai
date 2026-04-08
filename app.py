@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Request
 
 app = FastAPI()
 
@@ -6,12 +6,11 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ RESET (accepts with OR without body — REQUIRED for Scaler)
+# 🔥 NO BODY VALIDATION AT ALL
 @app.post("/reset")
-def reset(req: dict = Body(None)):
+async def reset(request: Request):
     return {"status": "ok"}
 
-# ✅ STEP
 @app.post("/step")
 def step():
     return {

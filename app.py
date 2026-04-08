@@ -3,20 +3,21 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# ✅ Request body model (IMPORTANT)
+# ✅ Request body model (REQUIRED for /reset)
 class ResetRequest(BaseModel):
     task: str
 
+# ✅ Root check
 @app.get("/")
 def root():
     return {"status": "running"}
 
-# ✅ FIXED: now accepts body
+# ✅ RESET (must accept body + return status only)
 @app.post("/reset")
 def reset(req: ResetRequest):
     return {"status": "ok"}
 
-# ✅ step endpoint
+# ✅ STEP (no body needed)
 @app.post("/step")
 def step():
     return {

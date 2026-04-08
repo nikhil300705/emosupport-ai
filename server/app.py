@@ -19,5 +19,11 @@ def step():
         "info": {}
     }
 
+# ✅ REQUIRED FOR SCALER
 def main():
     return app
+
+# ✅ MAKE IT CALLABLE
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server.app:app", host="0.0.0.0", port=7860)

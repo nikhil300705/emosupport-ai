@@ -1,18 +1,9 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Body
 
 app = FastAPI()
 
-@app.get("/")
-def root():
-    return {"status": "running"}
-
-# ✅ No validation, no schema → NEVER fails
 @app.post("/reset")
-async def reset(request: Request):
-    try:
-        await request.body()  # just read if exists
-    except:
-        pass
+async def reset(body: dict = Body(...)):
     return {"status": "ok"}
 
 @app.post("/step")

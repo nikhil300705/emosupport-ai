@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Body
+from typing import Any
 
 app = FastAPI()
 
@@ -6,14 +7,14 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ REQUIRED BODY BUT ACCEPT EMPTY {}
+# ✅ Accept ANY body, optional, no validation issues
 @app.post("/reset")
-async def reset(body: dict = Body(default={})):
+async def reset(body: Any = Body(default=None)):
     return {"status": "ok"}
 
-# ✅ SAME HERE
+# ✅ Same for step
 @app.post("/step")
-async def step(body: dict = Body(default={})):
+async def step(body: Any = Body(default=None)):
     return {
         "observation": "ok",
         "reward": 0.5,

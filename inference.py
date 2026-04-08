@@ -1,33 +1,20 @@
-from fastapi import FastAPI, Request
+class SupportEnv:
+    def __init__(self):
+        self.step_count = 0
 
-app = FastAPI()
+    def reset(self):
+        self.step_count = 0
+        return {
+            "observation": "start",
+            "info": {}
+        }
 
-@app.get("/")
-def root():
-    return {"status": "running"}
+    def step(self, action):
+        self.step_count += 1
 
-
-# REQUIRED endpoint
-@app.post("/reset")
-async def reset(request: Request):
-    try:
-        await request.body()
-    except:
-        pass
-    return {"status": "ok"}
-
-
-# REQUIRED endpoint
-@app.post("/step")
-async def step(request: Request):
-    try:
-        await request.body()
-    except:
-        pass
-
-    return {
-        "observation": "ok",
-        "reward": 0.5,
-        "done": False,
-        "info": {}
-    }
+        return {
+            "observation": "ok",
+            "reward": 0.5,
+            "done": self.step_count >= 3,
+            "info": {}
+        }

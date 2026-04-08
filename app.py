@@ -1,24 +1,20 @@
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 
 app = FastAPI()
-
 
 @app.get("/")
 def root():
     return {"status": "running"}
 
-
 @app.post("/reset")
-async def reset():
-    return JSONResponse(content={"status": "ok"})
-
+def reset():
+    return {"status": "ok"}
 
 @app.post("/step")
-async def step():
-    return JSONResponse(content={
+def step():
+    return {
         "observation": "ok",
         "reward": 0.5,
         "done": False,
         "info": {}
-    })
+    }

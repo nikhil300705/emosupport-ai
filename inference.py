@@ -1,20 +1,22 @@
-class SupportEnv:
-    def __init__(self):
-        self.step_count = 0
+from fastapi import FastAPI
 
-    def reset(self):
-        self.step_count = 0
-        return {
-            "observation": "start",
-            "info": {}
-        }
+app = FastAPI()
 
-    def step(self, action):
-        self.step_count += 1
+@app.get("/")
+def root():
+    return {"status": "running"}
 
-        return {
-            "observation": "ok",
-            "reward": 0.5,
-            "done": self.step_count >= 3,
-            "info": {}
-        }
+# ✅ NO BODY PARAMETER AT ALL
+@app.post("/reset")
+def reset():
+    return {"status": "ok"}
+
+# ✅ NO BODY PARAMETER AT ALL
+@app.post("/step")
+def step():
+    return {
+        "observation": "ok",
+        "reward": 0.5,
+        "done": False,
+        "info": {}
+    }

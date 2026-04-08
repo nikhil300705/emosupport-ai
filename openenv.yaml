@@ -1,7 +1,7 @@
 name: emosupport
 description: Emotion support AI
 
-entrypoint: app.py
+entrypoint: inference.py
 
 endpoints:
   - path: /reset

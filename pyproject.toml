@@ -5,7 +5,8 @@ description = "OpenEnv Emotional Support Agent"
 dependencies = [
     "openai",
     "fastapi",
-    "uvicorn"
+    "uvicorn",
+    "openenv>=0.2.0"
 ]
 
 [project.scripts]

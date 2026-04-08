@@ -1,20 +1,17 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import Optional
+from fastapi import FastAPI, Body
 
 app = FastAPI()
-
-class ResetRequest(BaseModel):
-    task: Optional[str] = "default"
 
 @app.get("/")
 def root():
     return {"status": "running"}
 
+# ✅ RESET (accepts with OR without body — REQUIRED for Scaler)
 @app.post("/reset")
-def reset(req: Optional[ResetRequest] = None):
+def reset(req: dict = Body(None)):
     return {"status": "ok"}
 
+# ✅ STEP
 @app.post("/step")
 def step():
     return {

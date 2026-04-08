@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Body
 
 app = FastAPI()
 
@@ -6,23 +6,14 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ NO VALIDATION AT ALL
+# ✅ REQUIRED BODY BUT ACCEPT EMPTY {}
 @app.post("/reset")
-async def reset(request: Request):
-    try:
-        await request.json()   # accept if exists
-    except:
-        pass
+async def reset(body: dict = Body(default={})):
     return {"status": "ok"}
 
 # ✅ SAME HERE
 @app.post("/step")
-async def step(request: Request):
-    try:
-        await request.json()
-    except:
-        pass
-
+async def step(body: dict = Body(default={})):
     return {
         "observation": "ok",
         "reward": 0.5,

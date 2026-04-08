@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-print("INFERENCE RUNNING ✅")  # <-- must appear in logs
+print("INFERENCE RUNNING ✅")
 
 app = FastAPI()
 

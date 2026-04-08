@@ -4,6 +4,6 @@ WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
 
-COPY inference.py ./inference.py
+COPY inference.py /app/inference.py
 
-CMD ["python3", "-u", "inference.py"]
+CMD ["python3", "-u", "/app/inference.py"]

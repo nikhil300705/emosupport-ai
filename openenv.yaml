@@ -6,10 +6,5 @@ entrypoint: inference.py
 endpoints:
   - path: /reset
     method: POST
-    request:
-      required: false
-
   - path: /step
     method: POST
-    request:
-      required: false

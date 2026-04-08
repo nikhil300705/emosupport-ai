@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-print("NEW VERSION LOADED")  # 👈 this helps verify deployment
+print("INFERENCE RUNNING ✅")  # <-- must appear in logs
 
 app = FastAPI()
 

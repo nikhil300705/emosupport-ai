@@ -1,0 +1,13 @@
+[project]
+name = "emosupport-ai"
+version = "0.1.0"
+description = "OpenEnv Emotional Support Agent"
+dependencies = [
+    "openai",
+    "fastapi",
+    "uvicorn"
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

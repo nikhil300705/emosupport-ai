@@ -1,0 +1,10 @@
+name: emosupport
+description: Emotion support AI
+
+entrypoint: inference.py
+
+endpoints:
+  - path: /reset
+    method: POST
+  - path: /step
+    method: POST

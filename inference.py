@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+print("NEW VERSION LOADED")  # 👈 this helps verify deployment
+
 app = FastAPI()
 
 @app.get("/")

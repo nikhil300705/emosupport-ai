@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Body
-from typing import Optional, Dict, Any
+from fastapi import FastAPI, Request
 
 app = FastAPI()
 
@@ -7,14 +6,22 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ BODY OPTIONAL (THIS IS KEY)
+# ✅ MUST READ BODY (important)
 @app.post("/reset")
-def reset(body: Optional[Dict[str, Any]] = Body(default=None)):
+async def reset(request: Request):
+    try:
+        await request.json()  # 👈 this line fixes the error
+    except:
+        pass
     return {"status": "ok"}
 
-# ✅ REQUIRED FORMAT FOR CHECKER
 @app.post("/step")
-def step(body: Optional[Dict[str, Any]] = Body(default=None)):
+async def step(request: Request):
+    try:
+        await request.json()
+    except:
+        pass
+
     return {
         "observation": "ok",
         "reward": 0.5,

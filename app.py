@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Body
-from typing import Dict, Any
+from fastapi import FastAPI
 
 app = FastAPI()
 
@@ -7,14 +6,14 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
-# ✅ Accept JSON body (required by checker)
+# ✅ NO BODY PARAMETER AT ALL
 @app.post("/reset")
-def reset(body: Dict[str, Any] = Body(default={})):
+def reset():
     return {"status": "ok"}
 
-# ✅ Required endpoint
+# ✅ NO BODY PARAMETER AT ALL
 @app.post("/step")
-def step(body: Dict[str, Any] = Body(default={})):
+def step():
     return {
         "observation": "ok",
         "reward": 0.5,

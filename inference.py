@@ -1,5 +1,4 @@
-from fastapi import FastAPI
-from fastapi.routing import APIRoute
+from fastapi import FastAPI, Request
 
 app = FastAPI()
 
@@ -7,35 +6,27 @@ app = FastAPI()
 def root():
     return {"status": "running"}
 
+# 🔥 FORCE ACCEPT ANY REQUEST (WITH OR WITHOUT BODY)
+@app.post("/reset")
+async def reset(request: Request):
+    try:
+        await request.json()  # try reading body if exists
+    except:
+        pass  # ignore if no body
 
-@app.post("/reset", openapi_extra={"requestBody": None})
-def reset():
     return {"status": "ok"}
 
 
-@app.post("/step", openapi_extra={"requestBody": None})
-def step():
+@app.post("/step")
+async def step(request: Request):
+    try:
+        await request.json()
+    except:
+        pass
+
     return {
         "observation": "ok",
         "reward": 0.5,
         "done": False,
         "info": {}
     }
-
-
-# 🔥 FORCE REMOVE REQUEST BODY FROM OPENAPI
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-
-    openapi_schema = app.openapi()
-
-    for path in openapi_schema["paths"].values():
-        for method in path.values():
-            method.pop("requestBody", None)
-
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
-
-
-app.openapi = custom_openapi

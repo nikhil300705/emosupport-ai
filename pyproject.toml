@@ -3,9 +3,9 @@ name = "emosupport-ai"
 version = "0.1.0"
 description = "OpenEnv Emotional Support Agent"
 dependencies = [
-    "openai",
     "fastapi",
     "uvicorn",
+    "openai",
     "openenv>=0.2.0"
 ]
 
